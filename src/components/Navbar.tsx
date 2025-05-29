@@ -6,7 +6,7 @@ import { Button } from './ui/button';
 import { supabase } from '@/lib/supabase';
 
 const Navbar = () => {
-  const [calUrl, setCalUrl] = useState('https://cal.com/snapstack/30-min');
+  const [calUrl, setCalUrl] = useState('https://cal.com/snapstack-scheduling/intro-consultation');
 
   useEffect(() => {
     const fetchCalUrl = async () => {
