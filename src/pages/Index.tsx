@@ -1,8 +1,8 @@
 
-import Landing from "./Landing";
+import Home from "./Home";
 
 const Index = () => {
-  return <Landing />;
+  return <Home />;
 };
 
 export default Index;
