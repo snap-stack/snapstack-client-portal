@@ -5,7 +5,7 @@ const Logo = () => {
   return (
     <Link to="/" className="inline-flex items-center">
       <img 
-        src="/snapstack-logo.svg" 
+        src="/lovable-uploads/4f8fc477-a314-468c-89ab-b5fe1571db74.png" 
         alt="SnapStack logo" 
         className="max-h-10"
       />
