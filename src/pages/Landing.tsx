@@ -3,8 +3,19 @@ import { Card } from "@/components/ui/card";
 import { Calendar, Users, Zap, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import Logo from "@/components/Logo";
+import { useCalendarUrl } from "@/hooks/useCalendarUrl";
 
 const Landing = () => {
+  const { calUrl } = useCalendarUrl();
+
+  const handleScheduleClick = () => {
+    window.open(calUrl, '_blank');
+  };
+
+  const handleCTAClick = () => {
+    window.open(calUrl, '_blank');
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100">
       {/* Navigation */}
@@ -21,7 +32,7 @@ const Landing = () => {
               <Button 
                 variant="outline" 
                 className="border-[#40C676] text-[#40C676] hover:bg-[#40C676] hover:text-white"
-                onClick={() => window.open('https://cal.com/snapstack/30-min', '_blank')}
+                onClick={handleScheduleClick}
               >
                 <Calendar className="w-4 h-4 mr-2" />
                 Schedule
@@ -46,6 +57,7 @@ const Landing = () => {
             <Button 
               size="lg" 
               className="bg-[#40C676] hover:bg-[#369b63] text-white px-8 py-4 text-lg rounded-xl shadow-lg hover:shadow-xl transition-all duration-200"
+              onClick={handleCTAClick}
             >
               Start planning my custom build
               <ArrowRight className="w-5 h-5 ml-2" />

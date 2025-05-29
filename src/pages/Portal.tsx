@@ -4,6 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { ExternalLink, Calendar, LogOut, Rocket } from "lucide-react";
 import { toast } from "sonner";
 import Logo from "@/components/Logo";
+import { useCalendarUrl } from "@/hooks/useCalendarUrl";
 
 interface AirtableApp {
   id: number;
@@ -24,7 +25,7 @@ const Portal = () => {
   const [profile, setProfile] = useState<Profile | null>(null);
   const [apps, setApps] = useState<AirtableApp[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [calUrl, setCalUrl] = useState("https://cal.com/snapstack/30-min");
+  const { calUrl } = useCalendarUrl();
 
   useEffect(() => {
     fetchPortalData();
