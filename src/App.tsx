@@ -4,7 +4,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Landing from "./pages/Landing";
+import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Invite from "./pages/Invite";
 import Portal from "./pages/Portal";
@@ -19,7 +19,7 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Landing />} />
+          <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/invite/:token" element={<Invite />} />
           <Route path="/portal" element={<Portal />} />

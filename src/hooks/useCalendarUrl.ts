@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from 'react';
-import { supabase } from '@/integrations/supabase/client';
+import { supabase } from '@/lib/supabase';
 
 export const useCalendarUrl = () => {
   const [calUrl, setCalUrl] = useState('https://cal.com/snapstack/30-min');
@@ -9,8 +9,8 @@ export const useCalendarUrl = () => {
   useEffect(() => {
     const fetchCalUrl = async () => {
       try {
-        const { data, error } = await supabase
-          .from('portal_settings')
+        const { data } = await supabase
+          .from('site_config')
           .select('cal_url')
           .single();
 
