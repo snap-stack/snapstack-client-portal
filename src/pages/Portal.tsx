@@ -1,9 +1,9 @@
-
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { ExternalLink, Calendar, LogOut, Rocket } from "lucide-react";
 import { toast } from "sonner";
+import Logo from "@/components/Logo";
 
 interface AirtableApp {
   id: number;
@@ -110,10 +110,7 @@ const Portal = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center">
-              <div className="bg-[#40C676] w-8 h-8 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-sm">S</span>
-              </div>
-              <span className="ml-2 text-xl font-bold text-gray-900">SnapStack</span>
+              <Logo />
               <span className="ml-4 text-gray-400">Client Portal</span>
             </div>
             

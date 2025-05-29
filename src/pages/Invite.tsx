@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -7,6 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Mail, ArrowLeft, CheckCircle, XCircle } from "lucide-react";
 import { Link } from "react-router-dom";
 import { toast } from "sonner";
+import Logo from "@/components/Logo";
 
 const Invite = () => {
   const { token } = useParams();
@@ -136,9 +136,7 @@ const Invite = () => {
         <Card className="border-0 shadow-xl">
           <CardHeader className="text-center pb-6">
             <div className="flex items-center justify-center mb-4">
-              <div className="bg-[#40C676] w-12 h-12 rounded-xl flex items-center justify-center">
-                <span className="text-white font-bold text-lg">S</span>
-              </div>
+              <Logo />
             </div>
             <CardTitle className="text-2xl font-bold text-gray-900">Welcome to SnapStack</CardTitle>
             <CardDescription className="text-gray-600">

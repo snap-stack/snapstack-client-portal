@@ -1,8 +1,8 @@
-
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Calendar, Users, Zap, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
+import Logo from "@/components/Logo";
 
 const Landing = () => {
   return (
@@ -11,12 +11,7 @@ const Landing = () => {
       <nav className="border-b bg-white/80 backdrop-blur-sm fixed top-0 w-full z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
-            <div className="flex items-center">
-              <div className="bg-[#40C676] w-8 h-8 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-sm">S</span>
-              </div>
-              <span className="ml-2 text-xl font-bold text-gray-900">SnapStack</span>
-            </div>
+            <Logo />
             <div className="flex items-center space-x-4">
               <Link to="/login">
                 <Button variant="ghost" className="text-gray-600 hover:text-gray-900">
@@ -103,10 +98,7 @@ const Landing = () => {
       <footer className="bg-gray-900 text-white py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <div className="flex items-center justify-center mb-4">
-            <div className="bg-[#40C676] w-8 h-8 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-sm">S</span>
-            </div>
-            <span className="ml-2 text-xl font-bold">SnapStack</span>
+            <Logo />
           </div>
           <p className="text-gray-400">
             © 2024 SnapStack. Building the future, one custom solution at a time.
