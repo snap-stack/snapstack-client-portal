@@ -5,7 +5,7 @@ const Logo = () => (
     <img
       src="/lovable-uploads/4f8fc477-a314-468c-89ab-b5fe1571db74.png"
       alt="SnapStack logo"
-      className="h-8 w-auto sm:h-10 md:h-12 object-contain"
+      className="h-16 w-auto sm:h-20 md:h-24 object-contain"
     />
   </Link>
 );
