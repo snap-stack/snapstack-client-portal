@@ -10,7 +10,7 @@ export default function useCalURL() {
     const fetchCalUrl = async () => {
       try {
         const { data, error } = await supabase
-          .from('site_config')
+          .from('portal_settings')
           .select('cal_url')
           .single();
         
