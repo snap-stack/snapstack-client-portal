@@ -85,7 +85,7 @@ const Login = () => {
         <Card className="border-0 shadow-xl">
           <CardHeader className="text-center pb-6">
             <div className="flex items-center justify-center mb-4">
-              <Logo />
+              <Logo className="mx-auto mt-2" />
             </div>
             <CardTitle className="text-2xl font-bold text-gray-900">Client Portal</CardTitle>
             <CardDescription className="text-gray-600">

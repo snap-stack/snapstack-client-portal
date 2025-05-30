@@ -42,7 +42,7 @@ const Navbar = () => {
       scrolled ? 'shadow-sm bg-white/80 backdrop-blur-sm' : 'bg-white'
     }`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between py-3">
+        <div className="flex items-center justify-between py-3 sm:py-2">
           <Logo />
           
           {/* Desktop Navigation */}
