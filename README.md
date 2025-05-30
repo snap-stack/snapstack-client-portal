@@ -1,8 +1,19 @@
+
 # Welcome to your Lovable project
 
 ## Project info
 
 **URL**: https://lovable.dev/projects/286ec153-f1c7-4d3d-ade6-fcdf7f6408ba
+
+## Database setup
+
+To set up the database for this project, run the following command to apply the migrations:
+
+```sh
+supabase db push
+```
+
+Alternatively, you can apply the migrations via the Supabase dashboard if you prefer.
 
 ## How can I edit this code?
 
@@ -59,6 +70,7 @@ This project is built with:
 - React
 - shadcn-ui
 - Tailwind CSS
+- Supabase
 
 ## How can I deploy this project?
 

@@ -1,4 +1,6 @@
-import { useState } from "react";
+
+import { useState, useEffect } from "react";
+import { Navigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -6,30 +8,71 @@ import { Mail, ArrowLeft } from "lucide-react";
 import { Link } from "react-router-dom";
 import { toast } from "sonner";
 import Logo from "@/components/Logo";
+import { supabase } from "@/lib/supabase";
+import type { User } from '@supabase/supabase-js';
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [user, setUser] = useState<User | null>(null);
+
+  useEffect(() => {
+    const getSession = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      setUser(session?.user ?? null);
+    };
+
+    getSession();
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      (event, session) => {
+        setUser(session?.user ?? null);
+        if (session?.user) {
+          // Check if user needs onboarding
+          const needsOnboarding = !session.user.user_metadata?.onboarded;
+          if (needsOnboarding) {
+            window.location.href = '/client-portal/onboard';
+          } else {
+            window.location.href = '/client-portal/dashboard';
+          }
+        }
+      }
+    );
+
+    return () => subscription.unsubscribe();
+  }, []);
 
   const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
     
-    // TODO: Implement Supabase auth signInWithOtp
     try {
-      // Placeholder for now
+      const { error } = await supabase.auth.signInWithOtp({
+        email,
+        options: {
+          emailRedirectTo: window.location.origin + '/client-portal'
+        }
+      });
+      
+      if (error) throw error;
+      
       toast.success("Magic link sent! Check your email.");
-      console.log("Sign in attempt with email:", email);
-    } catch (error) {
-      toast.error("Failed to send magic link. Please try again.");
+    } catch (error: any) {
+      toast.error(error.message || "Failed to send magic link. Please try again.");
     } finally {
       setIsLoading(false);
     }
   };
 
+  // Redirect if already logged in
+  if (user) {
+    const needsOnboarding = !user.user_metadata?.onboarded;
+    return <Navigate to={needsOnboarding ? '/client-portal/onboard' : '/client-portal/dashboard'} replace />;
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 flex items-center justify-center px-4">
-      <div className="w-full max-w-md">
+      <div className="w-full max-w-[420px]">
         {/* Back to home */}
         <Link 
           to="/" 
@@ -85,9 +128,9 @@ const Login = () => {
 
             <div className="mt-6 p-4 bg-gray-50 rounded-lg">
               <p className="text-sm text-gray-600 text-center">
-                <span className="font-medium">Not a client?</span>
+                <span className="font-medium">Need access?</span>
                 <br />
-                Ask your account manager for an invite.
+                Email your account manager for an invite.
               </p>
             </div>
           </CardContent>
