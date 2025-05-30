@@ -16,15 +16,15 @@ const Logo = ({ className = "" }: LogoProps) => {
         alt="SnapStack logo"
         onLoad={() => setLoaded(true)}
         className={`
-          /* ⬇️ responsive heights */
-          h-[32px]          /*  mobile  */
-          sm:h-[40px]       /* ≥ 640 px */
-          md:h-[48px]       /* ≥ 768 px */
-          lg:h-[56px]       /* ≥ 1024 px */
-          xl:h-[64px]       /* ≥ 1280 px */
+          /* 📐 SUPER-SIZED responsive heights */
+          h-[48px]          /* phones */
+          sm:h-[64px]       /* ≥640 px */
+          md:h-[80px]       /* ≥768 px */
+          lg:h-[96px]       /* ≥1024 px */
+          xl:h-[112px]      /* ≥1280 px */
           
-          w-auto            /* keep aspect ratio */
-          max-h-[64px]      /* absolute ceiling */
+          w-auto            /* preserve aspect ratio */
+          max-h-[112px]     /* absolute ceiling */
           transition-opacity duration-300
           ${loaded ? "opacity-100" : "opacity-0"}
         `}
