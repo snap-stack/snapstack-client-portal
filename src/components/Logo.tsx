@@ -1,3 +1,4 @@
+
 import { Link } from "react-router-dom";
 import { useState } from "react";
 
@@ -16,15 +17,15 @@ const Logo = ({ className = "" }: LogoProps) => {
         alt="SnapStack logo"
         onLoad={() => setLoaded(true)}
         className={`
-          /* 📐 SUPER-SIZED responsive heights */
-          h-[48px]          /* phones */
-          sm:h-[64px]       /* ≥640 px */
-          md:h-[80px]       /* ≥768 px */
-          lg:h-[96px]       /* ≥1024 px */
-          xl:h-[112px]      /* ≥1280 px */
+          /* 📐 SUPER-SIZED responsive heights - 2x larger */
+          h-[96px]          /* phones - was 48px */
+          sm:h-[128px]      /* ≥640 px - was 64px */
+          md:h-[160px]      /* ≥768 px - was 80px */
+          lg:h-[192px]      /* ≥1024 px - was 96px */
+          xl:h-[224px]      /* ≥1280 px - was 112px */
           
           w-auto            /* preserve aspect ratio */
-          max-h-[112px]     /* absolute ceiling */
+          max-h-[224px]     /* absolute ceiling - was 112px */
           transition-opacity duration-300
           ${loaded ? "opacity-100" : "opacity-0"}
         `}
