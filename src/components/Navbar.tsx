@@ -1,16 +1,15 @@
-
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Menu } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
-import { useMobile } from "@/hooks/use-mobile";
+import { useIsMobile } from "@/hooks/use-mobile";
 import { useScrolled } from "@/hooks/useScrolled";
 import Logo from "./Logo";
 import NavItems from "./NavItems";
 
 const Navbar = () => {
-  const isMobile = useMobile();
+  const isMobile = useIsMobile();
   const scrolled = useScrolled();
 
   return (
