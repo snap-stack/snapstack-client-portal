@@ -12,4 +12,8 @@ body {
   .bg-gradient-radial {
     background: radial-gradient(ellipse at center, var(--tw-gradient-stops));
   }
+  
+  .bg-radial {
+    @apply bg-[radial-gradient(ellipse_at_center,theme(colors.slate.50)/60_0%,transparent_70%)];
+  }
 }

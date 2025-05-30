@@ -20,25 +20,27 @@ const Home = () => {
 
       {/* Hero Section */}
       <div className="mt-20 lg:mt-28 pb-20 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center">
-            <div className="max-w-3xl mx-auto">
-              <h1 className="text-4xl sm:text-6xl font-bold text-gray-900 mb-6 leading-tight">
-                Custom builds that
-                <span className="text-[#40C676] block">scale with you</span>
-              </h1>
-              <p className="text-xl text-gray-600 mb-8 leading-relaxed">
-                From MVP to enterprise. We craft bespoke software solutions that grow with your business, 
-                backed by cutting-edge technology and seamless user experiences.
-              </p>
-              <Button 
-                size="lg" 
-                className="bg-[#40C676] hover:bg-[#369b63] text-white px-8 py-4 text-lg rounded-xl shadow-lg hover:shadow-xl transition-all duration-200"
-                onClick={handleCTAClick}
-              >
-                Start planning my custom build
-                <ArrowRight className="w-5 h-5 ml-2" />
-              </Button>
+        <div className="bg-radial">
+          <div className="max-w-7xl mx-auto">
+            <div className="text-center">
+              <div className="max-w-3xl mx-auto">
+                <h1 className="text-4xl sm:text-6xl font-bold text-gray-900 mb-6 leading-tight animate-fade-in">
+                  Custom builds that
+                  <span className="text-[#40C676] block">scale with you</span>
+                </h1>
+                <p className="text-xl text-gray-600 mb-8 leading-relaxed animate-fade-in">
+                  From MVP to enterprise. We craft bespoke software solutions that grow with your business, 
+                  backed by cutting-edge technology and seamless user experiences.
+                </p>
+                <Button 
+                  size="lg" 
+                  className="bg-[#40C676] hover:bg-[#369b63] text-white px-8 py-4 text-lg rounded-xl shadow-lg hover:shadow-xl hover:scale-[1.02] active:scale-100 transition-all duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#40C676]"
+                  onClick={handleCTAClick}
+                >
+                  Start planning my custom build
+                  <ArrowRight className="w-5 h-5 ml-2" />
+                </Button>
+              </div>
             </div>
           </div>
         </div>

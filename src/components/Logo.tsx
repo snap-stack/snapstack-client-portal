@@ -10,7 +10,7 @@ const Logo = () => {
       <img
         src="/lovable-uploads/4f8fc477-a314-468c-89ab-b5fe1571db74.png"
         alt="SnapStack logo"
-        className={`h-6 md:h-7 lg:h-8 w-auto object-contain transition-opacity duration-300 ${
+        className={`h-6 md:h-7 lg:h-10 w-auto max-h-[40px] object-contain transition-opacity duration-300 ${
           loaded ? 'opacity-100' : 'opacity-0'
         }`}
         onLoad={() => setLoaded(true)}
