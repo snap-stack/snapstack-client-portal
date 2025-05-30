@@ -4,7 +4,6 @@ import { Card } from "@/components/ui/card";
 import { Calendar, Users, Zap, ArrowRight } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import useCalURL from "@/hooks/useCalURL";
-import { motion } from "framer-motion";
 
 const Home = () => {
   const { calUrl } = useCalURL();
@@ -25,29 +24,15 @@ const Home = () => {
           <div className="max-w-7xl mx-auto">
             <div className="text-center">
               <div className="max-w-3xl mx-auto">
-                <motion.h1 
-                  initial={{ y: 20, opacity: 0 }}
-                  animate={{ y: 0, opacity: 1 }}
-                  transition={{ delay: 0.1 }}
-                  className="text-4xl sm:text-6xl font-bold text-gray-900 mb-6 leading-tight"
-                >
+                <h1 className="text-4xl sm:text-6xl font-bold text-gray-900 mb-6 leading-tight animate-fade-in">
                   Custom builds that
                   <span className="text-[#40C676] block">scale with you</span>
-                </motion.h1>
-                <motion.p 
-                  initial={{ y: 20, opacity: 0 }}
-                  animate={{ y: 0, opacity: 1 }}
-                  transition={{ delay: 0.2 }}
-                  className="text-xl text-gray-600 mb-8 leading-relaxed"
-                >
+                </h1>
+                <p className="text-xl text-gray-600 mb-8 leading-relaxed animate-fade-in [animation-delay:0.2s]">
                   From MVP to enterprise. We craft bespoke software solutions that grow with your business, 
                   backed by cutting-edge technology and seamless user experiences.
-                </motion.p>
-                <motion.div
-                  initial={{ y: 20, opacity: 0 }}
-                  animate={{ y: 0, opacity: 1 }}
-                  transition={{ delay: 0.3 }}
-                >
+                </p>
+                <div className="animate-fade-in [animation-delay:0.3s]">
                   <Button 
                     size="lg" 
                     className="bg-[#40C676] hover:bg-[#369b63] text-white px-8 py-4 text-lg rounded-xl shadow-lg hover:shadow-xl hover:scale-[1.02] active:scale-100 transition-all duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#40C676]"
@@ -56,7 +41,7 @@ const Home = () => {
                     Start planning my custom build
                     <ArrowRight className="w-5 h-5 ml-2" />
                   </Button>
-                </motion.div>
+                </div>
               </div>
             </div>
           </div>
