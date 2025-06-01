@@ -1,32 +1,49 @@
 
 import { useState, useEffect } from "react";
 import { Navigate } from "react-router-dom";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Mail, ArrowLeft } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import { Link } from "react-router-dom";
 import { toast } from "sonner";
 import Logo from "@/components/Logo";
 import { supabase } from "@/lib/supabase";
 import type { User } from '@supabase/supabase-js';
+import { Auth } from '@supabase/auth-ui-react';
+import { ThemeSupa } from '@supabase/auth-ui-shared';
 
 const Login = () => {
-  const [email, setEmail] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
   const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const getSession = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      setUser(session?.user ?? null);
+    const initAuth = async () => {
+      try {
+        // Handle session from URL (for OAuth redirects)
+        const { data, error } = await supabase.auth.getSessionFromUrl();
+        
+        if (error) {
+          console.error('Session from URL error:', error);
+          toast.error("Authentication error. Please try again.");
+        }
+        
+        // Get current session
+        const { data: { session } } = await supabase.auth.getSession();
+        setUser(session?.user ?? null);
+      } catch (error) {
+        console.error('Auth initialization error:', error);
+        toast.error("Failed to initialize authentication.");
+      } finally {
+        setLoading(false);
+      }
     };
 
-    getSession();
+    initAuth();
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (event, session) => {
+      async (event, session) => {
+        console.log('Auth state change:', event, session);
         setUser(session?.user ?? null);
+        
         if (session?.user) {
           // Check if user needs onboarding
           const needsOnboarding = !session.user.user_metadata?.onboarded;
@@ -42,27 +59,17 @@ const Login = () => {
     return () => subscription.unsubscribe();
   }, []);
 
-  const handleSignIn = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsLoading(true);
-    
-    try {
-      const { error } = await supabase.auth.signInWithOtp({
-        email,
-        options: {
-          emailRedirectTo: window.location.origin + '/client-portal'
-        }
-      });
-      
-      if (error) throw error;
-      
-      toast.success("Magic link sent! Check your email.");
-    } catch (error: any) {
-      toast.error(error.message || "Failed to send magic link. Please try again.");
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  // Show loading state during initialization
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-8 h-8 border-4 border-[#40C676] border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading...</p>
+        </div>
+      </div>
+    );
+  }
 
   // Redirect if already logged in
   if (user) {
@@ -95,42 +102,33 @@ const Login = () => {
             <CardHeader className="text-center pb-6">
               <CardTitle className="text-2xl font-bold text-gray-900">Client Portal</CardTitle>
               <CardDescription className="text-gray-600">
-                Sign in to access your project dashboard
+                Sign in with Google or your email to access your dashboard
               </CardDescription>
             </CardHeader>
             
             <CardContent>
-              <form onSubmit={handleSignIn} className="space-y-6">
-                <div className="space-y-2">
-                  <label htmlFor="email" className="text-sm font-medium text-gray-700">
-                    Email address
-                  </label>
-                  <Input
-                    id="email"
-                    type="email"
-                    placeholder="Enter your email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
-                    className="h-12"
-                  />
-                </div>
-
-                <Button 
-                  type="submit" 
-                  className="w-full h-12 bg-[#40C676] hover:bg-[#369b63] text-white font-medium rounded-lg"
-                  disabled={isLoading}
-                >
-                  {isLoading ? (
-                    "Sending magic link..."
-                  ) : (
-                    <>
-                      <Mail className="w-4 h-4 mr-2" />
-                      Send magic link
-                    </>
-                  )}
-                </Button>
-              </form>
+              <Auth
+                supabaseClient={supabase}
+                providers={["google"]}
+                magicLink={true}
+                appearance={{
+                  theme: ThemeSupa,
+                  variables: {
+                    default: {
+                      colors: {
+                        brand: '#40C676',
+                        brandAccent: '#369b63',
+                      },
+                    },
+                  },
+                  className: {
+                    container: 'auth-container',
+                    button: 'auth-button',
+                    input: 'auth-input',
+                  },
+                }}
+                redirectTo={window.location.origin + '/client-portal'}
+              />
 
               <div className="mt-6 p-4 bg-gray-50 rounded-lg">
                 <p className="text-sm text-gray-600 text-center">

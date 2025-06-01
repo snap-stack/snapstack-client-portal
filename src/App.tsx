@@ -10,6 +10,7 @@ import InviteLanding from "./pages/InviteLanding";
 import OnboardForm from "./pages/OnboardForm";
 import Dashboard from "./pages/Dashboard";
 import NotFound from "./pages/NotFound";
+import "./components/ui/auth-styles.css";
 
 const queryClient = new QueryClient();
 
