@@ -8,8 +8,6 @@ import { toast } from "sonner";
 import Logo from "@/components/Logo";
 import { supabase } from "@/lib/supabase";
 import type { User } from '@supabase/supabase-js';
-import { Auth } from '@supabase/auth-ui-react';
-import { ThemeSupa } from '@supabase/auth-ui-shared';
 
 const Login = () => {
   const [user, setUser] = useState<User | null>(null);
@@ -18,14 +16,6 @@ const Login = () => {
   useEffect(() => {
     const initAuth = async () => {
       try {
-        // Handle session from URL (for OAuth redirects)
-        const { data, error } = await supabase.auth.getSessionFromUrl();
-        
-        if (error) {
-          console.error('Session from URL error:', error);
-          toast.error("Authentication error. Please try again.");
-        }
-        
         // Get current session
         const { data: { session } } = await supabase.auth.getSession();
         setUser(session?.user ?? null);
@@ -107,28 +97,10 @@ const Login = () => {
             </CardHeader>
             
             <CardContent>
-              <Auth
-                supabaseClient={supabase}
-                providers={["google"]}
-                magicLink={true}
-                appearance={{
-                  theme: ThemeSupa,
-                  variables: {
-                    default: {
-                      colors: {
-                        brand: '#40C676',
-                        brandAccent: '#369b63',
-                      },
-                    },
-                  },
-                  className: {
-                    container: 'auth-container',
-                    button: 'auth-button',
-                    input: 'auth-input',
-                  },
-                }}
-                redirectTo={window.location.origin + '/client-portal'}
-              />
+              <div className="text-center p-8">
+                <p className="text-gray-600 mb-4">Authentication system temporarily unavailable.</p>
+                <p className="text-sm text-gray-500">Please contact your account manager for access.</p>
+              </div>
 
               <div className="mt-6 p-4 bg-gray-50 rounded-lg">
                 <p className="text-sm text-gray-600 text-center">
