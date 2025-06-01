@@ -8,6 +8,7 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import InviteLanding from "./pages/InviteLanding";
 import OnboardForm from "./pages/OnboardForm";
+import CompleteProfile from "./pages/CompleteProfile";
 import Dashboard from "./pages/Dashboard";
 import NotFound from "./pages/NotFound";
 import "./components/ui/auth-styles.css";
@@ -25,6 +26,7 @@ const App = () => (
           <Route path="/client-portal" element={<Login />} />
           <Route path="/client-portal/invite/:token" element={<InviteLanding />} />
           <Route path="/client-portal/onboard" element={<OnboardForm />} />
+          <Route path="/complete-profile" element={<CompleteProfile />} />
           <Route path="/client-portal/dashboard" element={<Dashboard />} />
           <Route path="*" element={<NotFound />} />
         </Routes>

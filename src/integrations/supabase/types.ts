@@ -97,6 +97,7 @@ export type Database = {
       }
       profiles: {
         Row: {
+          company: string | null
           company_name: string | null
           created_at: string | null
           display_name: string | null
@@ -107,6 +108,7 @@ export type Database = {
           phone: string | null
         }
         Insert: {
+          company?: string | null
           company_name?: string | null
           created_at?: string | null
           display_name?: string | null
@@ -117,6 +119,7 @@ export type Database = {
           phone?: string | null
         }
         Update: {
+          company?: string | null
           company_name?: string | null
           created_at?: string | null
           display_name?: string | null
