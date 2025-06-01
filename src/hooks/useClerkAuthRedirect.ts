@@ -24,11 +24,11 @@ export const useClerkAuthRedirect = (requireAuth = true) => {
       try {
         console.log('Checking profile for Clerk user:', user.id);
         
-        // Check if profile is complete in Supabase using the existing profiles table
+        // Check if profile is complete in the new user_profiles table
         const { data: profile, error } = await supabase
-          .from('profiles')
-          .select('first_name, last_name, company, phone')
-          .eq('id', user.id)
+          .from('user_profiles')
+          .select('first_name, last_name, company_name, phone_number, profile_completed_at')
+          .eq('user_id', user.id)
           .maybeSingle();
 
         if (error && error.code !== 'PGRST116') {
@@ -39,8 +39,9 @@ export const useClerkAuthRedirect = (requireAuth = true) => {
 
         const isProfileComplete = profile?.first_name && 
                                  profile?.last_name && 
-                                 profile?.company && 
-                                 profile?.phone;
+                                 profile?.company_name && 
+                                 profile?.phone_number &&
+                                 profile?.profile_completed_at;
 
         // Get current path
         const currentPath = window.location.pathname;

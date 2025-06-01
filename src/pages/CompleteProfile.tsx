@@ -33,11 +33,11 @@ export default function CompleteProfile() {
       try {
         console.log('Loading profile for user:', user.id);
         
-        // Pre-fill form with existing profile data or Clerk data
+        // Check existing profile data in the new user_profiles table
         const { data: profile, error } = await supabase
-          .from('profiles')
-          .select('first_name, last_name, company, phone')
-          .eq('id', user.id)
+          .from('user_profiles')
+          .select('first_name, last_name, company_name, phone_number, profile_completed_at')
+          .eq('user_id', user.id)
           .maybeSingle();
 
         if (error && error.code !== 'PGRST116') {
@@ -49,12 +49,12 @@ export default function CompleteProfile() {
         setFormData({
           firstName: profile?.first_name || user.firstName || '',
           lastName: profile?.last_name || user.lastName || '',
-          company: profile?.company || '',
-          phone: profile?.phone || ''
+          company: profile?.company_name || '',
+          phone: profile?.phone_number || ''
         });
 
         // If profile is already complete, redirect to dashboard
-        if (profile?.first_name && profile?.last_name && profile?.company && profile?.phone) {
+        if (profile?.first_name && profile?.last_name && profile?.company_name && profile?.phone_number && profile?.profile_completed_at) {
           console.log('Profile already complete, redirecting to dashboard');
           navigate('/client-portal/dashboard');
           return;
@@ -93,18 +93,18 @@ export default function CompleteProfile() {
       console.log('Profile data:', formData);
 
       const profileData = {
-        id: user.id,
+        user_id: user.id,
         first_name: formData.firstName,
         last_name: formData.lastName,
-        company: formData.company,
-        phone: formData.phone,
-        email: user.primaryEmailAddress?.emailAddress || null
+        company_name: formData.company,
+        phone_number: formData.phone,
+        profile_completed_at: new Date().toISOString()
       };
 
       const { error } = await supabase
-        .from('profiles')
+        .from('user_profiles')
         .upsert(profileData, {
-          onConflict: 'id'
+          onConflict: 'user_id'
         });
 
       if (error) {

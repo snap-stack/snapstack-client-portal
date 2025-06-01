@@ -2,30 +2,63 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { ExternalLink, Calendar, Rocket } from "lucide-react";
+import { ExternalLink, Calendar, Rocket, Briefcase, BarChart, Database, Settings } from "lucide-react";
 import Logo from "@/components/Logo";
 import ClerkUserMenu from "@/components/ClerkUserMenu";
 import useCalURL from "@/hooks/useCalURL";
 import { useClerkAuthRedirect } from "@/hooks/useClerkAuthRedirect";
 import { supabase } from "@/lib/supabase";
 
+interface AppLink {
+  id: string;
+  app_name: string;
+  airtable_url: string;
+  icon_identifier: string | null;
+  display_order: number | null;
+}
+
 const Dashboard = () => {
   const { user, loading } = useClerkAuthRedirect(true);
   const [profile, setProfile] = useState<any>(null);
+  const [appLinks, setAppLinks] = useState<AppLink[]>([]);
+  const [loadingApps, setLoadingApps] = useState(true);
   const { calUrl } = useCalURL();
 
   useEffect(() => {
     if (user) {
-      // Fetch user profile from Supabase
+      // Fetch user profile from the new user_profiles table
       const fetchProfile = async () => {
         const { data } = await supabase
-          .from('profiles')
+          .from('user_profiles')
           .select('*')
-          .eq('id', user.id)
+          .eq('user_id', user.id)
           .single();
         setProfile(data);
       };
+
+      // Fetch client app links
+      const fetchAppLinks = async () => {
+        console.log('Fetching app links for user:', user.id);
+        setLoadingApps(true);
+        
+        const { data, error } = await supabase
+          .from('client_app_links')
+          .select('id, app_name, airtable_url, icon_identifier, display_order')
+          .eq('user_id', user.id)
+          .order('display_order', { ascending: true });
+
+        if (error) {
+          console.error('Error fetching app links:', error);
+        } else {
+          console.log('Fetched app links:', data);
+          setAppLinks(data || []);
+        }
+        
+        setLoadingApps(false);
+      };
+
       fetchProfile();
+      fetchAppLinks();
     }
   }, [user]);
 
@@ -36,8 +69,8 @@ const Dashboard = () => {
   };
 
   const getDisplayName = () => {
-    if (profile?.company) {
-      return profile.company;
+    if (profile?.company_name) {
+      return profile.company_name;
     }
     if (profile?.first_name && profile?.last_name) {
       return `${profile.first_name} ${profile.last_name}`;
@@ -46,6 +79,25 @@ const Dashboard = () => {
       return user.fullName;
     }
     return "Welcome";
+  };
+
+  const getIconForApp = (iconIdentifier: string | null) => {
+    switch (iconIdentifier) {
+      case 'briefcase-icon':
+        return <Briefcase className="w-8 h-8" />;
+      case 'chart-icon':
+        return <BarChart className="w-8 h-8" />;
+      case 'database-icon':
+        return <Database className="w-8 h-8" />;
+      case 'settings-icon':
+        return <Settings className="w-8 h-8" />;
+      default:
+        return <Rocket className="w-8 h-8" />;
+    }
+  };
+
+  const handleAppClick = (url: string) => {
+    window.open(url, '_blank');
   };
 
   if (loading) {
@@ -97,7 +149,7 @@ const Dashboard = () => {
             Welcome, {getDisplayName()}! 👋
           </h1>
           <p className="text-gray-600">
-            Manage your custom applications and stay updated on project progress.
+            Access your custom applications and manage your project progress.
           </p>
         </div>
 
@@ -105,17 +157,47 @@ const Dashboard = () => {
         <div className="mb-8">
           <h2 className="text-2xl font-semibold text-gray-900 mb-6">My Apps</h2>
           
-          <Card className="text-center py-12">
-            <CardContent>
-              <Rocket className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-              <CardTitle className="text-xl text-gray-600 mb-2">
-                Your workspace is coming soon 🚀
-              </CardTitle>
-              <CardDescription className="text-gray-500">
-                We're preparing your custom applications. You'll see them here once they're ready.
-              </CardDescription>
-            </CardContent>
-          </Card>
+          {loadingApps ? (
+            <Card className="text-center py-12">
+              <CardContent>
+                <div className="w-8 h-8 border-4 border-[#40C676] border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+                <p className="text-gray-600">Loading your applications...</p>
+              </CardContent>
+            </Card>
+          ) : appLinks.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {appLinks.map((app) => (
+                <Card 
+                  key={app.id} 
+                  className="cursor-pointer hover:shadow-lg transition-shadow duration-200 group"
+                  onClick={() => handleAppClick(app.airtable_url)}
+                >
+                  <CardContent className="p-6 text-center">
+                    <div className="text-[#40C676] mb-4 flex justify-center group-hover:scale-110 transition-transform duration-200">
+                      {getIconForApp(app.icon_identifier)}
+                    </div>
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">{app.app_name}</h3>
+                    <div className="flex items-center justify-center text-sm text-gray-500 group-hover:text-[#40C676] transition-colors">
+                      <ExternalLink className="w-4 h-4 mr-1" />
+                      Open Application
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          ) : (
+            <Card className="text-center py-12">
+              <CardContent>
+                <Rocket className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+                <CardTitle className="text-xl text-gray-600 mb-2">
+                  No custom applications are currently assigned to your account
+                </CardTitle>
+                <CardDescription className="text-gray-500">
+                  Please contact support if you believe this is an error.
+                </CardDescription>
+              </CardContent>
+            </Card>
+          )}
         </div>
       </main>
     </div>

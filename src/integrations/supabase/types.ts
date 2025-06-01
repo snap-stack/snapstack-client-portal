@@ -44,6 +44,36 @@ export type Database = {
           },
         ]
       }
+      client_app_links: {
+        Row: {
+          airtable_url: string
+          app_name: string
+          created_at: string
+          display_order: number | null
+          icon_identifier: string | null
+          id: string
+          user_id: string
+        }
+        Insert: {
+          airtable_url: string
+          app_name: string
+          created_at?: string
+          display_order?: number | null
+          icon_identifier?: string | null
+          id?: string
+          user_id: string
+        }
+        Update: {
+          airtable_url?: string
+          app_name?: string
+          created_at?: string
+          display_order?: number | null
+          icon_identifier?: string | null
+          id?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       invites: {
         Row: {
           claimed_at: string | null
@@ -128,6 +158,39 @@ export type Database = {
           id?: string
           last_name?: string | null
           phone?: string | null
+        }
+        Relationships: []
+      }
+      user_profiles: {
+        Row: {
+          company_name: string | null
+          created_at: string
+          first_name: string | null
+          last_name: string | null
+          phone_number: string | null
+          profile_completed_at: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          company_name?: string | null
+          created_at?: string
+          first_name?: string | null
+          last_name?: string | null
+          phone_number?: string | null
+          profile_completed_at?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          company_name?: string | null
+          created_at?: string
+          first_name?: string | null
+          last_name?: string | null
+          phone_number?: string | null
+          profile_completed_at?: string | null
+          updated_at?: string
+          user_id?: string
         }
         Relationships: []
       }

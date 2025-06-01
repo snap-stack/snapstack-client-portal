@@ -16,6 +16,18 @@ import "./components/ui/auth-styles.css";
 
 const queryClient = new QueryClient();
 
+// SSO Callback component for Clerk
+const SSOCallback = () => {
+  return (
+    <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="text-center">
+        <div className="w-8 h-8 border-4 border-[#40C676] border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+        <p className="text-gray-600">Completing sign in...</p>
+      </div>
+    </div>
+  );
+};
+
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
@@ -25,6 +37,7 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/client-portal" element={<Login />} />
+          <Route path="/sso-callback" element={<SSOCallback />} />
           <Route path="/client-portal/invite/:token" element={<InviteLanding />} />
           <Route path="/client-portal/onboard" element={<OnboardForm />} />
           <Route path="/complete-profile" element={
