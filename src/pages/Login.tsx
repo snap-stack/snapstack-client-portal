@@ -14,7 +14,8 @@ const Login = () => {
 
   useEffect(() => {
     if (isLoaded && isSignedIn) {
-      navigate('/client-portal/dashboard');
+      // Let the ClerkProtectedRoute and useClerkAuthRedirect handle the profile check
+      navigate('/complete-profile');
     }
   }, [isSignedIn, isLoaded, navigate]);
 
@@ -54,7 +55,6 @@ const Login = () => {
               <CardContent className="flex justify-center">
                 <SignIn 
                   routing="hash"
-                  forceRedirectUrl="/client-portal/dashboard"
                   appearance={{
                     elements: {
                       rootBox: "w-full",
@@ -72,7 +72,7 @@ const Login = () => {
             {/* User is signed in, redirect will be handled by useEffect */}
             <div className="text-center">
               <div className="w-8 h-8 border-4 border-[#40C676] border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-              <p className="text-gray-600">Redirecting to dashboard...</p>
+              <p className="text-gray-600">Redirecting...</p>
             </div>
           </SignedIn>
         </div>

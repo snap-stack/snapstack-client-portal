@@ -32,11 +32,15 @@ export default function CompleteProfile() {
 
       try {
         // Pre-fill form with existing profile data or Clerk data
-        const { data: profile } = await supabase
+        const { data: profile, error } = await supabase
           .from('profiles')
           .select('first_name, last_name, company, phone')
           .eq('id', user.id)
-          .single();
+          .maybeSingle();
+
+        if (error && error.code !== 'PGRST116') {
+          console.error('Error loading profile:', error);
+        }
 
         setFormData({
           firstName: profile?.first_name || user.firstName || '',
@@ -74,19 +78,30 @@ export default function CompleteProfile() {
     setIsSubmitting(true);
 
     try {
+      console.log('Attempting to save profile for user:', user.id);
+      console.log('Profile data:', formData);
+
+      const profileData = {
+        id: user.id,
+        first_name: formData.firstName,
+        last_name: formData.lastName,
+        company: formData.company,
+        phone: formData.phone,
+        email: user.primaryEmailAddress?.emailAddress || null
+      };
+
       const { error } = await supabase
         .from('profiles')
-        .upsert({
-          id: user.id,
-          first_name: formData.firstName,
-          last_name: formData.lastName,
-          company: formData.company,
-          phone: formData.phone,
-          email: user.primaryEmailAddress?.emailAddress
+        .upsert(profileData, {
+          onConflict: 'id'
         });
 
-      if (error) throw error;
+      if (error) {
+        console.error('Supabase error:', error);
+        throw error;
+      }
 
+      console.log('Profile saved successfully');
       toast.success('Profile completed successfully!');
       navigate('/client-portal/dashboard');
     } catch (error: any) {
