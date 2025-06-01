@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import { toast } from "sonner";
 import Logo from "@/components/Logo";
 import { supabase } from "@/lib/supabase";
+import AuthCard from "@/components/AuthCard";
 import type { User } from '@supabase/supabase-js';
 
 const Login = () => {
@@ -16,9 +17,15 @@ const Login = () => {
   useEffect(() => {
     const initAuth = async () => {
       try {
-        // Get current session
-        const { data: { session } } = await supabase.auth.getSession();
-        setUser(session?.user ?? null);
+        // Exchange hash fragment for session if coming from OAuth
+        const { data, error } = await supabase.auth.getSession();
+        
+        if (error) {
+          console.error('Session error:', error);
+          toast.error("Authentication error. Please try again.");
+        }
+        
+        setUser(data.session?.user ?? null);
       } catch (error) {
         console.error('Auth initialization error:', error);
         toast.error("Failed to initialize authentication.");
@@ -97,10 +104,7 @@ const Login = () => {
             </CardHeader>
             
             <CardContent>
-              <div className="text-center p-8">
-                <p className="text-gray-600 mb-4">Authentication system temporarily unavailable.</p>
-                <p className="text-sm text-gray-500">Please contact your account manager for access.</p>
-              </div>
+              <AuthCard />
 
               <div className="mt-6 p-4 bg-gray-50 rounded-lg">
                 <p className="text-sm text-gray-600 text-center">
