@@ -5,10 +5,18 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { SignIn, SignedIn, SignedOut } from "@clerk/clerk-react";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useUser } from "@clerk/clerk-react";
 import Logo from "@/components/Logo";
 
 const Login = () => {
   const navigate = useNavigate();
+  const { isSignedIn, isLoaded } = useUser();
+
+  useEffect(() => {
+    if (isLoaded && isSignedIn) {
+      navigate('/client-portal/dashboard');
+    }
+  }, [isSignedIn, isLoaded, navigate]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100">
@@ -46,7 +54,7 @@ const Login = () => {
               <CardContent className="flex justify-center">
                 <SignIn 
                   routing="hash"
-                  fallbackRedirectUrl="/client-portal/dashboard"
+                  forceRedirectUrl="/client-portal/dashboard"
                   appearance={{
                     elements: {
                       rootBox: "w-full",
@@ -61,10 +69,10 @@ const Login = () => {
           </SignedOut>
           
           <SignedIn>
-            {/* User is signed in, redirect will be handled by useClerkAuthRedirect */}
+            {/* User is signed in, redirect will be handled by useEffect */}
             <div className="text-center">
               <div className="w-8 h-8 border-4 border-[#40C676] border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-              <p className="text-gray-600">Redirecting...</p>
+              <p className="text-gray-600">Redirecting to dashboard...</p>
             </div>
           </SignedIn>
         </div>
