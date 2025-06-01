@@ -31,6 +31,8 @@ export default function CompleteProfile() {
       }
 
       try {
+        console.log('Loading profile for user:', user.id);
+        
         // Pre-fill form with existing profile data or Clerk data
         const { data: profile, error } = await supabase
           .from('profiles')
@@ -42,12 +44,21 @@ export default function CompleteProfile() {
           console.error('Error loading profile:', error);
         }
 
+        console.log('Loaded profile:', profile);
+
         setFormData({
           firstName: profile?.first_name || user.firstName || '',
           lastName: profile?.last_name || user.lastName || '',
           company: profile?.company || '',
           phone: profile?.phone || ''
         });
+
+        // If profile is already complete, redirect to dashboard
+        if (profile?.first_name && profile?.last_name && profile?.company && profile?.phone) {
+          console.log('Profile already complete, redirecting to dashboard');
+          navigate('/client-portal/dashboard');
+          return;
+        }
       } catch (error) {
         console.error('Error loading profile:', error);
         // Pre-fill with Clerk data if no profile exists

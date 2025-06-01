@@ -22,7 +22,9 @@ export const useClerkAuthRedirect = (requireAuth = true) => {
       }
 
       try {
-        // Check if profile is complete in Supabase
+        console.log('Checking profile for Clerk user:', user.id);
+        
+        // Check if profile is complete in Supabase using the existing profiles table
         const { data: profile, error } = await supabase
           .from('profiles')
           .select('first_name, last_name, company, phone')
@@ -33,6 +35,8 @@ export const useClerkAuthRedirect = (requireAuth = true) => {
           console.error('Profile check error:', error);
         }
 
+        console.log('Profile data:', profile);
+
         const isProfileComplete = profile?.first_name && 
                                  profile?.last_name && 
                                  profile?.company && 
@@ -40,10 +44,13 @@ export const useClerkAuthRedirect = (requireAuth = true) => {
 
         // Get current path
         const currentPath = window.location.pathname;
+        console.log('Current path:', currentPath, 'Profile complete:', isProfileComplete);
 
         if (!isProfileComplete && currentPath !== '/complete-profile') {
+          console.log('Redirecting to complete profile');
           navigate('/complete-profile');
         } else if (isProfileComplete && currentPath === '/complete-profile') {
+          console.log('Redirecting to dashboard');
           navigate('/client-portal/dashboard');
         }
       } catch (error) {
