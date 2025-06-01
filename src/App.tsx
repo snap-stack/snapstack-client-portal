@@ -11,6 +11,7 @@ import OnboardForm from "./pages/OnboardForm";
 import CompleteProfile from "./pages/CompleteProfile";
 import Dashboard from "./pages/Dashboard";
 import NotFound from "./pages/NotFound";
+import ClerkProtectedRoute from "./components/ClerkProtectedRoute";
 import "./components/ui/auth-styles.css";
 
 const queryClient = new QueryClient();
@@ -26,8 +27,16 @@ const App = () => (
           <Route path="/client-portal" element={<Login />} />
           <Route path="/client-portal/invite/:token" element={<InviteLanding />} />
           <Route path="/client-portal/onboard" element={<OnboardForm />} />
-          <Route path="/complete-profile" element={<CompleteProfile />} />
-          <Route path="/client-portal/dashboard" element={<Dashboard />} />
+          <Route path="/complete-profile" element={
+            <ClerkProtectedRoute>
+              <CompleteProfile />
+            </ClerkProtectedRoute>
+          } />
+          <Route path="/client-portal/dashboard" element={
+            <ClerkProtectedRoute>
+              <Dashboard />
+            </ClerkProtectedRoute>
+          } />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

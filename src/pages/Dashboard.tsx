@@ -4,19 +4,19 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { ExternalLink, Calendar, Rocket } from "lucide-react";
 import Logo from "@/components/Logo";
-import UserMenu from "@/components/UserMenu";
+import ClerkUserMenu from "@/components/ClerkUserMenu";
 import useCalURL from "@/hooks/useCalURL";
-import { useAuthRedirect } from "@/hooks/useAuthRedirect";
+import { useClerkAuthRedirect } from "@/hooks/useClerkAuthRedirect";
 import { supabase } from "@/lib/supabase";
 
 const Dashboard = () => {
-  const { user, loading } = useAuthRedirect(true);
+  const { user, loading } = useClerkAuthRedirect(true);
   const [profile, setProfile] = useState<any>(null);
   const { calUrl } = useCalURL();
 
   useEffect(() => {
     if (user) {
-      // Fetch user profile
+      // Fetch user profile from Supabase
       const fetchProfile = async () => {
         const { data } = await supabase
           .from('profiles')
@@ -42,6 +42,9 @@ const Dashboard = () => {
     if (profile?.first_name && profile?.last_name) {
       return `${profile.first_name} ${profile.last_name}`;
     }
+    if (user?.fullName) {
+      return user.fullName;
+    }
     return "Welcome";
   };
 
@@ -57,7 +60,7 @@ const Dashboard = () => {
   }
 
   if (!user) {
-    return null; // Redirect is handled by useAuthRedirect
+    return null; // Redirect is handled by useClerkAuthRedirect
   }
 
   return (
@@ -80,7 +83,7 @@ const Dashboard = () => {
                 <Calendar className="w-4 h-4 mr-2" />
                 Schedule
               </Button>
-              <UserMenu user={user} />
+              <ClerkUserMenu />
             </div>
           </div>
         </div>

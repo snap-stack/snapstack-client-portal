@@ -7,11 +7,11 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { toast } from 'sonner';
 import Logo from '@/components/Logo';
 import { supabase } from '@/lib/supabase';
-import type { User } from '@supabase/supabase-js';
+import { useUser } from '@clerk/clerk-react';
 
 export default function CompleteProfile() {
   const navigate = useNavigate();
-  const [user, setUser] = useState<User | null>(null);
+  const { user, isLoaded } = useUser();
   const [loading, setLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
@@ -22,41 +22,44 @@ export default function CompleteProfile() {
   });
 
   useEffect(() => {
-    const getSession = async () => {
+    const loadProfile = async () => {
+      if (!isLoaded) return;
+      
+      if (!user) {
+        navigate('/client-portal');
+        return;
+      }
+
       try {
-        const { data: { session } } = await supabase.auth.getSession();
-        
-        if (!session?.user) {
-          navigate('/client-portal');
-          return;
-        }
-
-        setUser(session.user);
-
-        // Pre-fill form with any existing profile data
+        // Pre-fill form with existing profile data or Clerk data
         const { data: profile } = await supabase
           .from('profiles')
           .select('first_name, last_name, company, phone')
-          .eq('id', session.user.id)
+          .eq('id', user.id)
           .single();
 
-        if (profile) {
-          setFormData({
-            firstName: profile.first_name || '',
-            lastName: profile.last_name || '',
-            company: profile.company || '',
-            phone: profile.phone || ''
-          });
-        }
+        setFormData({
+          firstName: profile?.first_name || user.firstName || '',
+          lastName: profile?.last_name || user.lastName || '',
+          company: profile?.company || '',
+          phone: profile?.phone || ''
+        });
       } catch (error) {
         console.error('Error loading profile:', error);
+        // Pre-fill with Clerk data if no profile exists
+        setFormData({
+          firstName: user.firstName || '',
+          lastName: user.lastName || '',
+          company: '',
+          phone: ''
+        });
       } finally {
         setLoading(false);
       }
     };
 
-    getSession();
-  }, [navigate]);
+    loadProfile();
+  }, [user, isLoaded, navigate]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -79,7 +82,7 @@ export default function CompleteProfile() {
           last_name: formData.lastName,
           company: formData.company,
           phone: formData.phone,
-          email: user.email
+          email: user.primaryEmailAddress?.emailAddress
         });
 
       if (error) throw error;
@@ -98,7 +101,7 @@ export default function CompleteProfile() {
     setFormData(prev => ({ ...prev, [field]: e.target.value }));
   };
 
-  if (loading) {
+  if (!isLoaded || loading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 flex items-center justify-center">
         <div className="text-center">
