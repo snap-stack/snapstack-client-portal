@@ -55,6 +55,7 @@ const Login = () => {
               <CardContent className="flex justify-center">
                 <SignIn 
                   routing="hash"
+                  redirectUrl="/complete-profile"
                   appearance={{
                     elements: {
                       rootBox: "w-full",
