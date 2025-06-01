@@ -38,6 +38,7 @@ const App = () => (
           <Route path="/" element={<Home />} />
           <Route path="/client-portal" element={<Login />} />
           <Route path="/sso-callback" element={<SSOCallback />} />
+          <Route path="/client-portal/sso-callback" element={<SSOCallback />} />
           <Route path="/client-portal/invite/:token" element={<InviteLanding />} />
           <Route path="/client-portal/onboard" element={<OnboardForm />} />
           <Route path="/complete-profile" element={
