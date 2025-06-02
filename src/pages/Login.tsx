@@ -43,9 +43,6 @@ const Login = () => {
           <SignedOut>
             <Card className="border-0 shadow-xl">
               <CardHeader className="text-center pb-6">
-                <div className="auth-logo w-40 mx-auto -mt-8 mb-4">
-                  <Logo />
-                </div>
                 <CardTitle className="text-2xl font-bold text-gray-900">Client Portal</CardTitle>
                 <CardDescription className="text-gray-600">
                   Sign in to access your dashboard
@@ -60,11 +57,24 @@ const Login = () => {
                   fallbackRedirectUrl="/complete-profile"
                   forceRedirectUrl="/complete-profile"
                   appearance={{
+                    variables: {
+                      colorPrimary: "#40C676",
+                      colorText: "#1f2937",
+                      colorTextSecondary: "#6b7280",
+                      colorBackground: "#ffffff",
+                      colorInputBackground: "#ffffff",
+                      colorInputText: "#1f2937",
+                      borderRadius: "0.5rem",
+                    },
                     elements: {
                       rootBox: "w-full",
                       card: "border-0 shadow-none",
                       headerTitle: "hidden",
                       headerSubtitle: "hidden",
+                      socialButtonsBlockButton: "bg-white border border-gray-300 text-gray-700 hover:bg-gray-50",
+                      socialButtonsBlockButtonText: "font-medium",
+                      formButtonPrimary: "bg-[#40C676] hover:bg-[#369b63] text-white font-medium",
+                      footerActionLink: "text-[#40C676] hover:text-[#369b63]",
                     }
                   }}
                 />
