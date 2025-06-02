@@ -1,11 +1,9 @@
-
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { toast } from 'sonner';
-import Logo from '@/components/Logo';
 import { supabase } from '@/lib/supabase';
 import { useUser } from '@clerk/clerk-react';
 
@@ -143,9 +141,6 @@ export default function CompleteProfile() {
       <div className="w-full max-w-[420px]">
         <Card className="border-0 shadow-xl">
           <CardHeader className="text-center pb-6">
-            <div className="auth-logo w-40 mx-auto -mt-8 mb-4">
-              <Logo />
-            </div>
             <CardTitle className="text-2xl font-bold text-gray-900">Complete Your Profile</CardTitle>
             <CardDescription className="text-gray-600">
               Tell us a bit about yourself to get started
